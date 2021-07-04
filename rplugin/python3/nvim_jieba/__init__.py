@@ -18,6 +18,22 @@ class Main():
 
     def __init__(self, nvim):
         self.nvim = nvim
+        self.enabled = True
+
+
+    @pynvim.command('JiebaEnable', nargs = 0)
+    def jieba_enable(self):
+        self.enabled = True
+
+
+    @pynvim.command('JiebaDisable', nargs = 0)
+    def jieba_disable(self):
+        self.enabled = False
+
+
+    @pynvim.command('JiebaToggle', nargs = 0)
+    def jieba_toggle(self):
+        self.enabled ^= 1
 
 
     def jieba_get_word(self):
@@ -25,6 +41,8 @@ class Main():
 
 
     def jieba_get_pos_in_word(self):
+        if not self.enabled:
+            return None
         line = self.nvim.eval("getline('.')")
         if line == '':
             return None
